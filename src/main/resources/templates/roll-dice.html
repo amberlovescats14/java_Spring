@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/partials/navbar :: head">
+    <meta charset="UTF-8">
+    <title>Roll Dic</title>
+</head>
+<body>
+<nav th:replace="/partials/navbar :: navbar"></nav>
+<h1 th:if="${!rolled}">Choose number to roll dice...</h1>
+<h1 th:if="${rolled}" th:text="${message}"></h1>
+<h3 th:if="${rolled}">
+    Your number: <span th:text="${guess}">10</span>
+</h3>
+
+    <div class="card" th:if="${!rolled}">
+        <button class="red waves-effect waves-light btn">
+            <a href="/roll-dice/1">ONE</a>
+        </button>
+        <button class="orange waves-effect waves-light btn">
+            <a href="/roll-dice/2">TWO</a>
+        </button>
+        <button class="yellow waves-effect waves-light btn">
+            <a href="/roll-dice/3">THREE</a>
+        </button>
+        <button class="blue waves-effect waves-light btn">
+            <a href="/roll-dice/4">FOUR</a>
+        </button>
+        <button class="green waves-effect waves-light btn">
+            <a href="/roll-dice/5">FIVE</a>
+        </button>
+        <button class="purple waves-effect waves-light btn">
+            <a href="/roll-dice/6">SIX</a>
+        </button>
+    </div>
+
+<div th:if="${rolled}" class="row">
+    <span  class="z-depth-4 red white-text" th:text="${roll}"
+           th:each="roll : ${diceRolls}"
+           style="font-size: 4rem; margin: 2rem"></span>
+</div>
+
+
+</body>
+</html>
