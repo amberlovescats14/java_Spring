@@ -2,15 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Profile</title>
+    <title>Delete</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
 <nav th:include="partials/navbar :: navbar"></nav>
+<h1>Are you sure you want to delete</h1>
+<div class="row">
+<form th:action="@{'/posts/delete/'+ ${id}}"  method="post">
+    <a th:href="@{'/posts/'+ ${id}}" class="btn waves-effect waves-light btn-small pink darken-2">
+        Go Back</a>
+    <button type="submit" class="btn waves-effect waves-light btn-small pink darken-2">
+        Yes</button>
+</form>
 
-<h1>Welcome <span th:text="${username}">Berni</span>!</h1>
+</div>
 
 </body>
 </html>

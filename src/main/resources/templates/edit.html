@@ -8,7 +8,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
+<nav th:include="partials/navbar :: navbar"></nav>
 <h1>Edit Post</h1>
+<h1 th:if="${alert}" class="text-red">All Fields Required</h1>
 
 <div class="row" >
     <form class="col s12" th:action="@{'/posts/edit/'+ ${post.id}}" method="post">
@@ -25,9 +27,11 @@
                 <label for="description">Description</label>
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light" type="submit" name="action">
+                <button class="btn waves-effect waves-light pink darken-2" type="submit" name="action">
                     Submit
                 </button>
+                <a th:href="@{'/posts/'+ ${post.id}}"
+                   class="btn waves-effect waves-light pink darken-2">Go Back</a>
             </div>
         </div>
     </form>

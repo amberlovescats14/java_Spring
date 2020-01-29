@@ -90,6 +90,28 @@ public class PostController {
 
     }
 
+    //! Delete
+    @GetMapping("/posts/delete/{id}")
+    public String showDelete(
+            @PathVariable long id,
+            Model model
+    ) throws PostException {
+        postDao.findById(id)
+                .orElseThrow(()-> new PostException());
+        model.addAttribute("id", id);
+        return "delete";
+    }
+
+    @PostMapping("/posts/delete/{id}")
+    public String deletePost(
+            @PathVariable long id
+    ) throws PostException {
+        postDao.findById(id)
+                .orElseThrow(()-> new PostException());
+        postDao.deleteById(id);
+        return "redirect:/posts";
+    }
+
 
 
 }
