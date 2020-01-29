@@ -11,3 +11,11 @@ describe products;
 describe dogs;
 drop table dogs;
 
+show tables;
+select * from post;
+
+insert into post (title, description) values
+('Squeky Chair', 'Need a new one'),
+('Good oranges', 'Thick peel'),
+('LV Purse', 'Please buy me one') ;
+

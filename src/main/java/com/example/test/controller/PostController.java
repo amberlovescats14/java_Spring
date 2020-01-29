@@ -1,54 +1,95 @@
 package com.example.test.controller;
 
+import com.example.test.exception.PostException;
 import com.example.test.model.Post;
+import com.example.test.model.Product;
+import com.example.test.repos.PostRepo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PostController {
-    private ArrayList<Post> posts = new ArrayList<>(){{
-        add(new Post(1,"First"));
-        add(new Post(2,"Second"));
-        add(new Post(3,"Third"));
-    }};
 
+    private PostRepo postDao;
 
+    public PostController(PostRepo postDao) {
+        this.postDao = postDao;
+    }
+
+    //! SHOW ALL
     @GetMapping("/posts")
     public String all(Model model){
+        List<Post> posts = postDao.findAll();
         model.addAttribute("posts", posts);
         return "posts";
     }
 
 
+    //! SHOW ONE
     @GetMapping("/posts/{id}")
-    @ResponseBody
-    public String showUserById(@PathVariable long id){
-        String response = "User Not found";
-        for (Post post : posts) {
-            if(post.getId() == id) {
-                response = post.toString();
-            }
-        }
-        return response;
+    public String showUserById(
+            @PathVariable long id,
+            Model model
+    ) throws PostException {
+        Post found = postDao.findById(id)
+                    .orElseThrow(()-> new PostException());
+
+        model.addAttribute("post", found);
+        return "singlePost";
+
     }
 
+    //!CREATE
     @GetMapping("/posts/create")
     public String showForm(){
         return "create";
     }
-
+//
     @PostMapping("/posts/create")
     public String createPost(
             @RequestParam(name = "title") String title,
+            @RequestParam String description,
             Model model
             ) {
-        posts.add(new Post(posts.size()+1, title));
-        model.addAttribute("posts", posts);
-        return "posts";
+        Post post = new Post(title, description);
+        postDao.save(post);
+        return "redirect:/posts";
     }
+
+    //! EDIT
+    @GetMapping("/posts/edit/{id}")
+    public String showEdit(
+            @PathVariable long id,
+            Model model
+    ) throws PostException {
+        Post post = postDao.findById(id)
+                .orElseThrow(()-> new PostException());
+        model.addAttribute("post", post);
+        return "edit";
+    }
+
+    @PostMapping("/posts/edit/{id}")
+    public String editPost(
+            @RequestParam long id,
+            @RequestParam String title,
+            @RequestParam String description,
+            Model model
+    ) {
+        if(title.isEmpty() || description.isEmpty()){
+            model.addAttribute("alert", true);
+            return "redirect:/posts/edit/"+id;
+        }
+        Post post = new Post(id, title, description);
+        postDao.save(post);
+        return "redirect:/posts/"+id;
+
+    }
+
 
 
 }
