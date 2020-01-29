@@ -22,13 +22,20 @@ public class PostController {
     }
 
     //! SHOW ALL
+//    @GetMapping("/posts")
+//    public String all(Model model){
+//        List<Post> posts = postDao.findAll();
+//        model.addAttribute("posts", posts);
+//        return "posts";
+//    }
+//z : react
     @GetMapping("/posts")
-    public String all(Model model){
-        List<Post> posts = postDao.findAll();
-        model.addAttribute("posts", posts);
-        return "posts";
-    }
+    @ResponseBody
+    public Iterable<Post> all(){
 
+        Iterable<Post> posts = postDao.findAll();
+        return posts;
+    }
 
     //! SHOW ONE
     @GetMapping("/posts/{id}")
