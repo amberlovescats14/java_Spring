@@ -1,5 +1,7 @@
 package com.example.test.model;
 
+import com.example.test.model.user.User;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,7 +9,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id = 0;
+    private long id;
 
     @Column(nullable = false, unique = true)
     private String title;
@@ -15,6 +17,9 @@ public class Post {
     @Column(nullable = false)
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Post() {
     }
@@ -51,6 +56,14 @@ public class Post {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

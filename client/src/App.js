@@ -9,7 +9,7 @@ const App = () => {
     <BrowserRouter>
     <Nav/>
     <Router/>
-      
+
     </BrowserRouter>
   )
 }
