@@ -6,6 +6,9 @@ show databases;
 use spring_blog;
 show tables;
 
+select * from users;
+select * from posts;
+describe posts;
 # describe table users;
 
 insert into users (email, password, username)
@@ -13,7 +16,7 @@ values ('amber@mail.com', 'aj', 'amberlovescats14'),
        ('mom@mail.com', 'mm', 'momlovescats'),
        ('cami@mail.com', 'cj', 'camilovescats14');
 
-insert into post (title, description, user_id) values
+insert into posts (title, description, user_id) values
 ('Squeky Chair', 'Need a new one', 1),
 ('Good oranges', 'Thick peel', 2),
 ('LV Purse', 'Please buy me one', 1) ;
