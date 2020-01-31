@@ -7,25 +7,7 @@ use spring_blog;
 show tables;
 
 # describe table users;
-drop table  products;
-describe products;
- describe post;
-describe users;
-describe pet_owner;
-select * from pet_owner;
-describe vet;
 
-
-describe dogs;
-drop table dogs;
-select * from pet_owner;
-
-show tables;
-select * from post;
-
-describe post;
-select * from post;
-truncate post;
 insert into users (email, password, username)
 values ('amber@mail.com', 'aj', 'amberlovescats14'),
        ('mom@mail.com', 'mm', 'momlovescats'),

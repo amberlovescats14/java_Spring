@@ -1,20 +1,21 @@
 package com.example.test.model;
 
+
 import com.example.test.model.user.User;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "posts")
 public class Post {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(columnDefinition = "varchar(100) not null")
     private String title;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "varchar(200) not null")
     private String description;
 
     @ManyToOne
@@ -23,20 +24,20 @@ public class Post {
 
     public Post() {
     }
-    public Post(String title, String description){
-        this.title = title;
-        this.description = description;
-    }
+
     public Post(long id, String title, String description){
         this.id = id;
         this.title = title;
         this.description = description;
     }
-
-
+    public Post( String title, String description){
+        this.title = title;
+        this.description = description;
+    }
     public long getId() {
         return id;
     }
+
 
     public void setId(long id) {
         this.id = id;
@@ -72,6 +73,7 @@ public class Post {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

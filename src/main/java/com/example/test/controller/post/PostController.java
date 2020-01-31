@@ -1,4 +1,4 @@
-package com.example.test.controller;
+package com.example.test.controller.post;
 
 import com.example.test.exception.PostException;
 import com.example.test.model.Post;
@@ -61,7 +61,7 @@ public class PostController {
         model.addAttribute("users", users);
         return "create";
     }
-//
+
     @PostMapping("/posts/create")
     public String createPost(
             @RequestParam(name = "title") String title,
