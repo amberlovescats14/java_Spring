@@ -19,15 +19,22 @@
                 </div>
                 <div class="card-action">
                    <th:block th:if="${user.posts}">
-                       <a class='dropdown-trigger btn' href='#' th:data-target="${user.id}"
+                       <a class='dropdown-trigger btn pink lighten-2
+            left-align' href='#' th:data-target="${user.id}"
                        >See Posts!</a>
                        <!-- Dropdown Structure -->
                        <ul th:id="${user.id}" class='dropdown-content'>
                             <th:block th:each="post : ${user.posts}">
-                                <li><a th:href="@{'/posts/'+ ${post.id}}" th:text="${post.title}">TITLE</a></li>
+                                <li><a th:href="@{'/posts/'+ ${post.id}}" th:text="${post.title}" >TITLE
+                                </a></li>
                             </th:block>
                        </ul>
                    </th:block>
+                    <div class="card-action  ">
+                        <a class="waves-effect waves-light btn pink lighten-2 left-align"
+                           th:href="@{'/user/'+ ${user.id}}"
+                        >View Profile</a>
+                    </div>
                 </div>
             </div>
         </div>

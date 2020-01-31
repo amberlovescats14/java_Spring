@@ -69,9 +69,10 @@ public class PostController {
             @RequestParam String username,
             Model model
             ) {
+        Post post = new Post(description, title);
         User user = getUserByUsername(username);
-        Post post = new Post(title, description);
-//        user.setPosts(post);
+        System.out.println("USER: "+ user.toString());
+
         post.setUser(user);
         postDao.save(post);
         return "redirect:/posts";
@@ -82,6 +83,7 @@ public class PostController {
         User found = new User();
         for (User user : users) {
             if(user.getUsername().toLowerCase().equals(username.toLowerCase())){
+                found.setId(user.getId());
                 found.setUsername(username);
                 found.setEmail(user.getEmail());
                 found.setPassword(user.getPassword());
