@@ -13,17 +13,18 @@
 <h1 th:if="${alert}" class="text-red">All Fields Required</h1>
 
 <div class="row" >
-    <form class="col s12" th:action="@{'/posts/edit/'+ ${post.id}}" method="post">
-        <input type="number" th:value="${post.id}" name="id" hidden>
+    <form class="col s12" th:action="@{'/posts/edit/'+ ${post.id}}" method="post" th:object="${post}">
+        <input type="text" th:value="${post.user.id}" name="userId" hidden>
+        <input type="number" th:value="${post.id}" th:field="*{id}" hidden>
         <div class="row">
             <div class="input-field col s6">
-                <input placeholder="Title" id="title" type="text" class="validate field" name="title"
+                <input placeholder="Title" id="title" type="text" class="validate field" th:field="*{title}"
                        th:value="${post.title}">
                 <label for="title">Title</label>
             </div>
             <div class="input-field col s6">
                 <input type="text" placeholder="Description"
-                       id="description" class="validate field" name="description" th:value="${post.description}">
+                       id="description" class="validate field" th:field="*{description}" th:value="${post.description}">
                 <label for="description">Description</label>
             </div>
             <div class="row">

@@ -5,6 +5,8 @@ drop database spring_blog;
 show databases;
 use spring_blog;
 show tables;
+describe categories;
+describe post_category;
 
 select * from users;
 select * from posts;
@@ -33,5 +35,23 @@ insert into vet (phone_number, vet_name, pet_owner_id)
 values ('2105559898', 'pacheco', 2),
        ('2105559898', 'pacheco', 1);
 
+select * from posts;
+insert into post_category (post_id, category_id)
+values (1,1),
+       (2,3),
+       (3,4),
+       (6,1),
+       (7,4),
+       (8,1),
+       (9,3);
+
+insert into categories (name)
+values ('professional'),
+       ('pets'),
+       ('children'),
+       ('funny');
+
+select * from post_category;
+select * from posts;
 
 

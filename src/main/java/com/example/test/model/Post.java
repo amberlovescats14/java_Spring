@@ -1,9 +1,11 @@
 package com.example.test.model;
 
 
+import com.example.test.model.categories.Categories;
 import com.example.test.model.user.User;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -21,6 +23,14 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "postCategory",
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")}
+    )
+    private List<Categories> categories;
 
     public Post() {
     }
@@ -67,6 +77,13 @@ public class Post {
         this.user = user;
     }
 
+    public List<Categories> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Categories> categories) {
+        this.categories = categories;
+    }
 
     @Override
     public String toString() {

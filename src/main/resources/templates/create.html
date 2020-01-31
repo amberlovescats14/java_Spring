@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:include="partials/navbar :: head">
     <meta charset="UTF-8">
     <title>Create</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
 </head>
-<body>
+<body style="padding: 30px !important;">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
 <nav th:include="partials/navbar :: navbar"></nav>
 <h1>Create Post</h1>
 <h1 th:if="${alert}" class="text-red">All Fields Required</h1>
 <div class="row">
-    <form class="col s12" action="/posts/create" method="post">
+    <form class="col s12" action="/posts/create" method="post" th:object="${post}">
         <div class="row">
             <div class="input-field col s6">
-                <input placeholder="Title" id="title" type="text" class="validate" name="title">
+                <input placeholder="Title" id="title" type="text" class="validate" th:field="*{title}" >
                 <label for="title">Title</label>
             </div>
 
             <div class="row">
                 <div class="input-field col s6">
                     <input type="text" placeholder="Description"
-                           id="desciption" class="validate" name="description">
+                           id="desciption" class="validate" th:field="*{description}">
                     <label for="desciption">Description</label>
                 </div>
             </div>
@@ -36,6 +40,20 @@
                     </select>
                 </div>
             </div>
+<!--            <div class="row">-->
+<!--                <div class="input-field col12">-->
+                    <th:block th:each="cat : ${allCategories}">
+                        <p>
+                    <span>
+                        <label th:for="${cat.id}">
+                           <input type="checkbox" th:value="${cat.name}" th:id="${cat.id}" name="primitiveCategories">
+                            <span th:text="${cat.name}"></span>
+                        </label>
+                    </span>
+                        </p>
+                    </th:block>
+<!--                </div>-->
+<!--            </div>-->
             <div class="row">
                 <button class="btn waves-effect waves-light pink darken-2" type="submit" name="action">
                     Submit

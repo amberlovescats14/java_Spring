@@ -5,7 +5,8 @@
     <title>Users Index</title>
 </head>
 <body>
-<h1>HI</h1>
+<nav th:include="partials/navbar :: navbar"></nav>
+<h1>All Users</h1>
 <div class="row">
     <th:block th:each="user : ${users}">
         <div class="col s12 m6">
@@ -20,7 +21,7 @@
                 <div class="card-action">
                    <th:block th:if="${user.posts}">
                        <a class='dropdown-trigger btn pink lighten-2
-            left-align' href='#' th:data-target="${user.id}"
+            left-right' href='#' th:data-target="${user.id}"
                        >See Posts!</a>
                        <!-- Dropdown Structure -->
                        <ul th:id="${user.id}" class='dropdown-content'>
@@ -31,7 +32,7 @@
                        </ul>
                    </th:block>
                     <div class="card-action  ">
-                        <a class="waves-effect waves-light btn pink lighten-2 left-align"
+                        <a class="waves-effect waves-light btn pink lighten-2 left-right"
                            th:href="@{'/user/'+ ${user.id}}"
                         >View Profile</a>
                     </div>

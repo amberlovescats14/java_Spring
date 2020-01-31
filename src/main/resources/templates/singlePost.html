@@ -16,6 +16,10 @@
             <div class="card-title">
         <h2 class="white-text"><span th:text="${post.title}">holder</span></h2>
             </div>
+            <div class="card-text">
+                Created by:
+                <span th:text="${post.user.username.toUpperCase()}"></span>
+            </div>
             <div class="card-text" th:text="${post.description}"></div>
             <div class="card-action">
                 <a th:href="@{'/posts/edit/'+ ${post.id}}">Edit Post</a>

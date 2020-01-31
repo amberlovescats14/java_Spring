@@ -2,14 +2,16 @@ package com.example.test.controller.post;
 
 import com.example.test.exception.PostException;
 import com.example.test.model.Post;
-import com.example.test.model.Product;
+import com.example.test.model.categories.Categories;
 import com.example.test.model.user.User;
+import com.example.test.repos.CategoriesRepo;
 import com.example.test.repos.PostRepo;
 import com.example.test.repos.UserRepo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,11 +19,13 @@ import java.util.List;
 public class PostController {
 
     private PostRepo postDao;
-    private UserRepo userRepo;
+    private UserRepo userDao;
+    private CategoriesRepo categoriesDao;
 
-    public PostController(PostRepo postDao, UserRepo userRepo) {
+    public PostController(PostRepo postDao, UserRepo userDao, CategoriesRepo categoriesDao) {
         this.postDao = postDao;
-        this.userRepo = userRepo;
+        this.userDao = userDao;
+        this.categoriesDao = categoriesDao;
     }
 
     //! SHOW ALL
@@ -57,29 +61,38 @@ public class PostController {
     //!CREATE
     @GetMapping("/posts/create")
     public String showForm( Model model){
-        List<User> users = userRepo.findAll();
+        List<User> users = userDao.findAll();
+        List<Categories> categories = categoriesDao.findAll();
+        Post post = new Post();
         model.addAttribute("users", users);
+        model.addAttribute("allCategories", categories);
+        model.addAttribute("post", post);
         return "create";
     }
 
     @PostMapping("/posts/create")
     public String createPost(
-            @RequestParam(name = "title") String title,
-            @RequestParam String description,
-            @RequestParam String username,
-            Model model
+            @ModelAttribute Post post,
+            @RequestParam String[] primitiveCategories,
+            @RequestParam String username
             ) {
-        Post post = new Post(description, title);
         User user = getUserByUsername(username);
-        System.out.println("USER: "+ user.toString());
-
         post.setUser(user);
-        postDao.save(post);
-        return "redirect:/posts";
+
+        List<Categories> listOfCategories = new ArrayList<>();
+        for (String cat : primitiveCategories) {
+            System.out.println("caata");
+            listOfCategories.add(new Categories(cat));
+        }
+        post.setCategories(listOfCategories);
+
+
+        Post p2 =  postDao.save(post);
+        return "redirect:/posts/" +p2.getId() ;
     }
 
     private User getUserByUsername(String username){
-        List<User> users = userRepo.findAll();
+        List<User> users = userDao.findAll();
         User found = new User();
         for (User user : users) {
             if(user.getUsername().toLowerCase().equals(username.toLowerCase())){
@@ -106,18 +119,15 @@ public class PostController {
 
     @PostMapping("/posts/edit/{id}")
     public String editPost(
-            @RequestParam long id,
-            @RequestParam String title,
-            @RequestParam String description,
+            @ModelAttribute Post post,
+            @RequestParam long userId,
             Model model
-    ) {
-        if(title.isEmpty() || description.isEmpty()){
-            model.addAttribute("alert", true);
-            return "redirect:/posts/edit/"+id;
-        }
-        Post post = new Post(id, title, description);
-        postDao.save(post);
-        return "redirect:/posts/"+id;
+    ) throws PostException {
+        User user = userDao.findById(userId)
+                .orElseThrow(()->new PostException());
+        post.setUser(user);
+        Post updatedPost = postDao.save(post);
+        return "redirect:/posts/"+updatedPost.getId();
 
     }
 
