@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Owners</title>
+</head>
+<body>
+<h1>hello</h1>
+<div th:each="petOwner: ${petOwners}">
+    <h1 th:text="${petOwner.name}"></h1>
+    <p>Vet: <span th:text="${petOwner.vet.vetName}"></span></p>
+</div>
+
+</body>
+</html>

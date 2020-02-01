@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="partials/navbar :: head">
+    <meta charset="UTF-8">
+    <title>Edit</title>
+
+</head>
+<body>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+<nav th:include="partials/navbar :: navbar"></nav>
+<h1>Edit Post</h1>
+<h1 th:if="${alert}" class="text-red">All Fields Required</h1>
+
+<div class="row" >
+    <form class="col s12" th:action="@{'/posts/edit/'+ ${post.id}}" method="post" th:object="${post}">
+        <input type="text" th:value="${post.user.id}" name="userId" hidden>
+        <input type="number" th:value="${post.id}" th:field="*{id}" hidden>
+        <div class="row">
+            <div class="input-field col s6">
+                <input placeholder="Title" id="title" type="text" class="validate field" th:field="*{title}"
+                       th:value="${post.title}">
+                <label for="title">Title</label>
+            </div>
+            <div class="input-field col s6">
+                <input type="text" placeholder="Description"
+                       id="description" class="validate field" th:field="*{description}" th:value="${post.description}">
+                <label for="description">Description</label>
+            </div>
+<!--            checkbox-->
+            <th:block th:each="cat : ${allCategories}">
+                <p>
+                    <span>
+                        <label th:for="${cat.id}">
+                           <input type="checkbox" th:value="${cat.id}" th:id="${cat.id}" name="primitiveCategories"
+                                  th:checked="${catIds.contains(cat.id)}">
+                            <span th:text="${cat.name}"></span>
+                        </label>
+                    </span>
+                </p>
+            </th:block>
+<!--            end-->
+            <div class="row">
+                <button class="btn waves-effect waves-light pink darken-2" type="submit" name="action">
+                    Submit
+                </button>
+                <a th:href="@{'/posts/'+ ${post.id}}"
+                   class="btn waves-effect waves-light pink darken-2">Go Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

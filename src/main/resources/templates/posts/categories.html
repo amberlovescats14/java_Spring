@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="partials/navbar :: head">
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+<nav th:include="partials/navbar :: navbar"></nav>
+<h1>Categories</h1>
+<div class="row">
+<th:block th:each="cat : ${categories}">
+    <div class="col s12 m6">
+        <div class="card pink darken-2">
+            <div class="card-content white-text">
+                <span class="card-title" th:text="${cat.name}"></span>
+                <div>
+                    <th:block th:each="post : ${cat.posts}">
+                        <span class="badge pink lighten-4">
+                            <a th:href="@{'/posts/'+ ${post.id}}"
+                            th:text="${post.title}"></a>
+                        </span>
+                    </th:block>
+                </div>
+                <div class="card-action">
+                    <a th:href="@{'/category/'+ ${cat.id}}">Edit</a>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</th:block>
+</div>
+
+
+<h1>Create Category</h1>
+<div class="row z-depth-3" >
+    <form class="col s12" th:action="@{'/categories'}" method="post" th:object="${category}">
+
+        <div class="row">
+            <div class="input-field col s6">
+                <input placeholder="Category Name" id="name" type="text" class="validate field" th:field="*{name}">
+                <label for="name">Name: </label>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light pink darken-2 col s6" type="submit" name="action">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>
+
+
+
+</body>
+</html>

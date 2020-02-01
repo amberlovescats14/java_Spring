@@ -6,15 +6,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>
+        body {
+            background-image:
+                    url("../../static/js/img/houndstooth-pattern.png");
+            background-size: cover;
+        }
+    </style>
 </head>
 <body>
 <nav th:fragment="navbar">
-    <div class="nav-wrapper">
+    <div class="nav-wrapper pink darken-2">
         <a href="#" class="brand-logo">Logo</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="/posts/create">Create</a></li>
-            <li><a href="/posts">All</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/posts/create">New Post</a></li>
+            <li><a href="/categories">Categories</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/user/create">New User</a></li>
             <li><a href="/">Home</a></li>
+            
         </ul>
     </div>
 </nav>

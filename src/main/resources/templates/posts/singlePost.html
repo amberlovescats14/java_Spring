@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>One</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+<nav th:include="partials/navbar :: navbar"></nav>
+<h1>Dynamic URL</h1>
+<div class="row">
+    <div class="card col s4 offset-s4 pink">
+        <div class="card-body">
+            <div class="card-title">
+        <h2 class="white-text"><span th:text="${post.title}">holder</span></h2>
+            </div>
+            <div class="card-text">
+                Created by:
+                <span th:text="${post.user.username.toUpperCase()}"></span>
+            </div>
+            <div class="card-text" th:text="${post.description}"></div>
+            <div class="card-text">Categories:
+            <th:block th:each="cat : ${post.categories}">
+                <span th:text=" ${cat.name} "></span>
+            </th:block>
+            </div>
+            <div class="card-action">
+                <a th:href="@{'/posts/edit/'+ ${post.id}}">Edit Post</a>
+                <a th:href="@{'/posts/delete/'+ ${id}}" >Delete post</a>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+
+
+</body>
+</html>
