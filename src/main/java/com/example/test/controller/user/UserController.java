@@ -1,12 +1,15 @@
 package com.example.test.controller.user;
 
+import com.example.test.exception.PostException;
 import com.example.test.model.Post;
 import com.example.test.model.user.User;
 import com.example.test.repos.UserRepo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -29,7 +32,25 @@ public class UserController {
     public String showSingleUser(
             @PathVariable long id,
             Model model
-    ){
+    ) throws PostException {
+        User user = userDao.findById(id)
+                .orElseThrow(()-> new PostException());
+        model.addAttribute("user", user);
         return "users/single";
+    }
+
+    //! CREATE
+    @GetMapping("/user/create")
+    public String showCreateView(Model model){
+        model.addAttribute("user", new User());
+        return "users/create";
+    }
+
+    @PostMapping("/user/create")
+    public String createUser(
+            @ModelAttribute User user
+    ) {
+        userDao.save(user);
+        return "redirect:/user/"+user.getId();
     }
 }

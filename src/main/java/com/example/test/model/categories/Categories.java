@@ -23,6 +23,11 @@ public class Categories {
     public Categories(String name){
         this.name = name;
     }
+
+    public void addPost(Post post){
+        posts.add(post);
+        System.out.println("added");
+    }
     public long getId() {
         return id;
     }

@@ -5,6 +5,7 @@ import com.example.test.model.categories.Categories;
 import com.example.test.model.user.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,7 @@ public class Post {
             joinColumns = {@JoinColumn(name = "post_id")},
             inverseJoinColumns = {@JoinColumn(name = "category_id")}
     )
-    private List<Categories> categories;
+    private List<Categories> categories = new ArrayList<>();
 
     public Post() {
     }
@@ -43,6 +44,11 @@ public class Post {
     public Post( String title, String description){
         this.title = title;
         this.description = description;
+    }
+
+    public void addCategory(Categories category){
+        categories.add(category);
+        System.out.println("added");
     }
     public long getId() {
         return id;

@@ -11,9 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+//<th:errors="*{title}"
+//@ModelAttribute @Valid Post post
 
 @Controller
 public class PostController {
@@ -73,20 +76,17 @@ public class PostController {
     @PostMapping("/posts/create")
     public String createPost(
             @ModelAttribute Post post,
-            @RequestParam String[] primitiveCategories,
+            @RequestParam Long[] primitiveCategories,
             @RequestParam String username
-            ) {
+            ) throws PostException {
         User user = getUserByUsername(username);
         post.setUser(user);
 
-        List<Categories> listOfCategories = new ArrayList<>();
-        for (String cat : primitiveCategories) {
-            System.out.println("caata");
-            listOfCategories.add(new Categories(cat));
+        for (Long cat : primitiveCategories) {
+          Categories category = categoriesDao.findById(cat)
+                  .orElseThrow(()-> new PostException());
+          post.addCategory(category);
         }
-        post.setCategories(listOfCategories);
-
-
         Post p2 =  postDao.save(post);
         return "redirect:/posts/" +p2.getId() ;
     }
