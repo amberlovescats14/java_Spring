@@ -13,6 +13,14 @@
         <div class="card pink darken-2">
             <div class="card-content white-text">
                 <span class="card-title" th:text="${cat.name}"></span>
+                <div>
+                    <th:block th:each="post : ${cat.posts}">
+                        <span class="badge pink lighten-4">
+                            <a th:href="@{'/posts/'+ ${post.id}}"
+                            th:text="${post.title}"></a>
+                        </span>
+                    </th:block>
+                </div>
                 <div class="card-action">
                     <a th:href="@{'/category/'+ ${cat.id}}">Edit</a>
                 </div>

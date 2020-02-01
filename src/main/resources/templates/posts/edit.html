@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:include="partials/navbar :: head">
     <meta charset="UTF-8">
     <title>Edit</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
 </head>
 <body>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
 <nav th:include="partials/navbar :: navbar"></nav>
 <h1>Edit Post</h1>
 <h1 th:if="${alert}" class="text-red">All Fields Required</h1>
@@ -27,6 +32,19 @@
                        id="description" class="validate field" th:field="*{description}" th:value="${post.description}">
                 <label for="description">Description</label>
             </div>
+<!--            checkbox-->
+            <th:block th:each="cat : ${allCategories}">
+                <p>
+                    <span>
+                        <label th:for="${cat.id}">
+                           <input type="checkbox" th:value="${cat.id}" th:id="${cat.id}" name="primitiveCategories"
+                                  th:checked="${catIds.contains(cat.id)}">
+                            <span th:text="${cat.name}"></span>
+                        </label>
+                    </span>
+                </p>
+            </th:block>
+<!--            end-->
             <div class="row">
                 <button class="btn waves-effect waves-light pink darken-2" type="submit" name="action">
                     Submit

@@ -7,11 +7,11 @@ import com.example.test.model.user.User;
 import com.example.test.repos.CategoriesRepo;
 import com.example.test.repos.PostRepo;
 import com.example.test.repos.UserRepo;
+import com.example.test.services.PostSvc;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +24,13 @@ public class PostController {
     private PostRepo postDao;
     private UserRepo userDao;
     private CategoriesRepo categoriesDao;
+    private PostSvc postSvc;
 
-    public PostController(PostRepo postDao, UserRepo userDao, CategoriesRepo categoriesDao) {
+    public PostController(PostRepo postDao, UserRepo userDao, CategoriesRepo categoriesDao, PostSvc postSvc) {
         this.postDao = postDao;
         this.userDao = userDao;
         this.categoriesDao = categoriesDao;
+        this.postSvc = postSvc;
     }
 
     //! SHOW ALL
@@ -36,7 +38,7 @@ public class PostController {
     public String all(Model model){
         List<Post> posts = postDao.findAll();
         model.addAttribute("posts", posts);
-        return "posts";
+        return "posts/posts";
     }
 //z : react
 //    @GetMapping("/posts")
@@ -57,7 +59,7 @@ public class PostController {
                     .orElseThrow(()-> new PostException());
 
         model.addAttribute("post", found);
-        return "singlePost";
+        return "posts/singlePost";
 
     }
 
@@ -70,7 +72,7 @@ public class PostController {
         model.addAttribute("users", users);
         model.addAttribute("allCategories", categories);
         model.addAttribute("post", post);
-        return "create";
+        return "posts/create";
     }
 
     @PostMapping("/posts/create")
@@ -79,7 +81,7 @@ public class PostController {
             @RequestParam Long[] primitiveCategories,
             @RequestParam String username
             ) throws PostException {
-        User user = getUserByUsername(username);
+        User user = postSvc.getUserByUsername(username);
         post.setUser(user);
 
         for (Long cat : primitiveCategories) {
@@ -88,22 +90,11 @@ public class PostController {
           post.addCategory(category);
         }
         Post p2 =  postDao.save(post);
+        postSvc.addPostToCategories(p2);
         return "redirect:/posts/" +p2.getId() ;
     }
 
-    private User getUserByUsername(String username){
-        List<User> users = userDao.findAll();
-        User found = new User();
-        for (User user : users) {
-            if(user.getUsername().toLowerCase().equals(username.toLowerCase())){
-                found.setId(user.getId());
-                found.setUsername(username);
-                found.setEmail(user.getEmail());
-                found.setPassword(user.getPassword());
-            }
-        }
-        return found;
-    }
+
 
     //! EDIT
     @GetMapping("/posts/edit/{id}")
@@ -113,19 +104,33 @@ public class PostController {
     ) throws PostException {
         Post post = postDao.findById(id)
                 .orElseThrow(()-> new PostException());
+
+        //creating an arrayList of id's for check purpose
+        List<Long> catIDs = new ArrayList<>();
+        for (Categories category : post.getCategories()) {
+            catIDs.add(category.getId());
+        }
+        model.addAttribute("catIds", catIDs);
         model.addAttribute("post", post);
-        return "edit";
+        model.addAttribute("allCategories", categoriesDao.findAll());
+        return "posts/edit";
     }
 
     @PostMapping("/posts/edit/{id}")
     public String editPost(
             @ModelAttribute Post post,
             @RequestParam long userId,
+            @RequestParam Long[] primitiveCategories,
             Model model
     ) throws PostException {
         User user = userDao.findById(userId)
                 .orElseThrow(()->new PostException());
         post.setUser(user);
+        for (Long catID : primitiveCategories) {
+            Categories category = categoriesDao.findById(catID)
+                    .orElseThrow(()-> new PostException());
+            post.addCategory(category);
+        }
         Post updatedPost = postDao.save(post);
         return "redirect:/posts/"+updatedPost.getId();
 
@@ -140,7 +145,7 @@ public class PostController {
         postDao.findById(id)
                 .orElseThrow(()-> new PostException());
         model.addAttribute("id", id);
-        return "delete";
+        return "posts/delete";
     }
 
     @PostMapping("/posts/delete/{id}")
