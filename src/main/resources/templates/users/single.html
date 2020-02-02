@@ -14,6 +14,35 @@
             <div class="card-title">
                 <h2 class="white-text"><span th:text="${user.email}">holder</span></h2>
             </div>
+<!--            action-->
+            <div class="card-action">
+                <a class="waves-effect waves-light btn pink lighten-4"
+                   th:href="@{'/user/edit/'+ ${user.id}}">
+                    Edit Profile</a>
+                <!-- Modal Trigger -->
+                <a class="waves-effect waves-light btn modal-trigger pink lighten-4" href="#modal1">Delete Profile</a>
+    
+                <!-- Modal Structure -->
+                <div id="modal1" class="modal">
+                    <div class="modal-content">
+                        <h4>Confirm</h4>
+                        <p>Are you sure you want to delete your profile?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form th:action="@{'/user/delete/'+ ${user.id}}"
+                            method="post">
+                            <a href="#!"
+                               class="modal-close waves-effect waves-light btn modal-trigger pink"> No</a>
+                            <button type="submit"
+                            class="waves-effect waves-light btn modal-trigger pink"
+                            >Yes</button>
+                        </form>
+                
+                    </div>
+                </div>
+                
+            </div>
+<!--            end action-->
             <th:block th:each="post : ${user.posts}">
                 <div class="card pink lighten-2">
                     <div class="card-content">
@@ -28,6 +57,15 @@
     </div>
 </div>
 
-
+<script
+        src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.modal').modal();
+    });
+</script>
 </body>
 </html>

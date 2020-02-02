@@ -76,7 +76,15 @@ public class UserController {
 
     //! DELETE
 
-
+    @PostMapping("/user/delete/{id}")
+    public String deleteUser(
+            @PathVariable long id
+    ) throws PostException {
+        User user = userDao.findById(id)
+                .orElseThrow(()->new PostException());
+        userDao.delete(user);
+        return "redirect:/users";
+    }
 
 
 

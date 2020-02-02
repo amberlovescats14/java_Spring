@@ -54,4 +54,14 @@ values ('professional'),
 select * from post_category;
 select * from posts;
 
+show tables;
+delete from users where id = 2;
+delete from posts where id=1;
+
+describe users;
+describe posts;
+describe post_category;
+describe categories;
+
+
 
