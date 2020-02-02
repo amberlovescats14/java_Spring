@@ -53,4 +53,31 @@ public class UserController {
         userDao.save(user);
         return "redirect:/user/"+user.getId();
     }
+
+    //!EDIT
+    @GetMapping("/user/edit/{id}")
+    public String showEditView(
+            @PathVariable long id,
+            Model model
+    ) throws PostException {
+        User user = userDao.findById(id)
+                .orElseThrow(()-> new PostException());
+        model.addAttribute("user", user);
+        return "users/edit";
+    }
+    @PostMapping("/user/edit/{id}")
+    public String editUser(
+            @ModelAttribute User user,
+            @PathVariable long id
+    ){
+        userDao.save(user);
+        return "redirect:/user/" + id;
+    }
+
+    //! DELETE
+
+
+
+
+
 }

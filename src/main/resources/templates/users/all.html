@@ -12,7 +12,7 @@
         <div class="col s12 m6">
             <div class="card pink darken-2">
                 <div class="card-content white-text">
-                    <span class="card-title" th:text="${user.username}"></span>
+                    <span class="card-title" th:text="${user.username.toUpperCase()}"></span>
                     <p>Email:
                         <span th:text="${user.email}"></span>
                     </p>
@@ -20,8 +20,8 @@
                 </div>
                 <div class="card-action">
                    <th:block th:if="${user.posts}">
-                       <a class='dropdown-trigger btn pink lighten-2
-            left-right' href='#' th:data-target="${user.id}"
+                       <a class='dropdown-trigger btn pink lighten-5
+            left-right black-text' href='#' th:data-target="${user.id}"
                        >See Posts!</a>
                        <!-- Dropdown Structure -->
                        <ul th:id="${user.id}" class='dropdown-content'>
@@ -30,12 +30,16 @@
                                 </a></li>
                             </th:block>
                        </ul>
+<!--                       end dropdown-->
                    </th:block>
-                    <div class="card-action  ">
-                        <a class="waves-effect waves-light btn pink lighten-2 left-right"
-                           th:href="@{'/user/'+ ${user.id}}"
-                        >View Profile</a>
-                    </div>
+                </div>
+                <div class="card-action  ">
+                    <a class="waves-effect waves-light btn pink lighten-2 left-right"
+                       th:href="@{'/user/'+ ${user.id}}"
+                    >View Profile</a>
+                    <a class="waves-effect waves-light btn pink lighten-2 left-right"
+                       th:href="@{'/user/edit/'+ ${user.id}}"
+                    >Edit Profile</a>
                 </div>
             </div>
         </div>
