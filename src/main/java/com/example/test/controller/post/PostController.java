@@ -7,6 +7,7 @@ import com.example.test.model.user.User;
 import com.example.test.repos.CategoriesRepo;
 import com.example.test.repos.PostRepo;
 import com.example.test.repos.UserRepo;
+import com.example.test.services.EmailService;
 import com.example.test.services.PostSvc;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,12 +26,14 @@ public class PostController {
     private UserRepo userDao;
     private CategoriesRepo categoriesDao;
     private PostSvc postSvc;
+    private EmailService emailService;
 
-    public PostController(PostRepo postDao, UserRepo userDao, CategoriesRepo categoriesDao, PostSvc postSvc) {
+    public PostController(PostRepo postDao, UserRepo userDao, CategoriesRepo categoriesDao, PostSvc postSvc, EmailService emailService) {
         this.postDao = postDao;
         this.userDao = userDao;
         this.categoriesDao = categoriesDao;
         this.postSvc = postSvc;
+        this.emailService = emailService;
     }
 
     //! SHOW ALL
@@ -91,6 +94,14 @@ public class PostController {
         }
         Post p2 =  postDao.save(post);
         postSvc.addPostToCategories(p2);
+//        z: emailService
+        emailService.prepareAndSend(
+                p2,
+                "Post Created",
+                p2.getUser().getUsername().toUpperCase()+ " created a new " +
+                "post with the title: " + p2.getTitle().toUpperCase());
+//        end email
+
         return "redirect:/posts/" +p2.getId() ;
     }
 
@@ -132,6 +143,7 @@ public class PostController {
             post.addCategory(category);
         }
         Post updatedPost = postDao.save(post);
+        emailService.prepareAndSend(updatedPost, "Updated Post", "'"+updatedPost.getTitle()+"' has been updated");
         return "redirect:/posts/"+updatedPost.getId();
 
     }
@@ -152,8 +164,9 @@ public class PostController {
     public String deletePost(
             @PathVariable long id
     ) throws PostException {
-        postDao.findById(id)
+        Post found =  postDao.findById(id)
                 .orElseThrow(()-> new PostException());
+        emailService.prepareAndSend(found, "Post deleted", "Post '"+found.getTitle()+"' has been delted.");
         postDao.deleteById(id);
         return "redirect:/posts";
     }
