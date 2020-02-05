@@ -42,7 +42,11 @@
                            th:href="@{'/user/edit/'+ ${user.id}}"
                         >Edit Profile</a>
                     </th:block>
-                
+                    <th:block th:if="${user.id != loggedInId}">
+                        <a class="waves-effect waves-light btn pink lighten-2 left-right white-text"
+                           th:href="@{'/user/edit/'+ ${user.id}}" disabled="true"
+                        >Edit Profile</a>
+                    </th:block>
                 </div>
             </div>
         </div>

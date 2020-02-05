@@ -37,14 +37,5 @@ public class CategoriesController {
         categoriesDao.save(category);
         return "redirect:/categories";
     }
-//
-//    @GetMapping("/category/{id}")
-//    public String showEditForm(
-//            @PathVariable long id,
-//            Model model
-//    ) throws PostException {
-//        Categories category = categoriesDao.findById(id)
-//                .orElseThrow(()-> new PostException());
-//
-//    }
+
 }

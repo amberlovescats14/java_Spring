@@ -21,14 +21,16 @@
                 <span th:text="${post.user.username.toUpperCase()}"></span>
             </div>
             <div class="card-text" th:text="${post.description}"></div>
-            <div class="card-text">Categories:
+            <div class="card-text right-align">Categories:
             <th:block th:each="cat : ${post.categories}">
-                <span th:text=" ${cat.name} "></span>
+                <span th:text=" ${cat.name} " class="badge pink lighten-2 rounded white-text"></span>
             </th:block>
             </div>
             <div class="card-action">
-                <a th:href="@{'/posts/edit/'+ ${post.id}}">Edit Post</a>
-                <a th:href="@{'/posts/delete/'+ ${id}}" >Delete post</a>
+                <th:block th:if="${post.user.id == loggedInId}">
+                    <a th:href="@{'/posts/edit/'+ ${post.id}}">Edit Post</a>
+                    <a th:href="@{'/posts/delete/'+ ${id}}" >Delete post</a>
+                </th:block>
             </div>
         </div>
     

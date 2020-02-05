@@ -4,6 +4,7 @@ import com.example.test.model.Post;
 import com.example.test.model.categories.Categories;
 import com.example.test.model.user.User;
 import com.example.test.repos.UserRepo;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,5 +46,15 @@ public class PostSvc {
     ){
         if(currentUser.getId() == paramUser.getId()) return true;
         else return false;
+    }
+
+    //! Check if logged in is true
+    public boolean checkIfThereIsALoggedInUser(){
+        return SecurityContextHolder.getContext().getAuthentication() != null;
+    }
+
+    //! return loggedIn User
+    public User getLoggedInUser(){
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

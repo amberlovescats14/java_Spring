@@ -32,12 +32,12 @@
             </div>
             <div class="row">
                 <div class="input-field col6">
-                    <select name="username" id="username">
-                        <th:block th:each="user : ${users}">
-                            <option th:value="${user.getUsername()}"
-                            th:text="${user.getUsername().toUpperCase()}"></option>
-                        </th:block>
-                    </select>
+                    <input type="text" th:name="username" id="username" class="disabled"
+                    th:value="${loggedInUsername}" hidden>
+                    <label for="username">Username:
+                    <span th:text="${loggedInUsername}"></span>
+                    </label>
+
                 </div>
             </div>
 <!--checkbox-->
@@ -46,7 +46,7 @@
                     <span>
                         <label th:for="${cat.id}">
                            <input type="checkbox" th:value="${cat.id}" th:id="${cat.id}" name="primitiveCategories">
-                            <span th:text="${cat.name}"></span>
+                            <span th:text="${cat.name.toUpperCase()}"></span>
                         </label>
                     </span>
                         </p>

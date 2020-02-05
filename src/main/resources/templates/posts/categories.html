@@ -12,7 +12,7 @@
     <div class="col s12 m6">
         <div class="card pink darken-2">
             <div class="card-content white-text">
-                <span class="card-title" th:text="${cat.name}"></span>
+                <span class="card-title" th:text="${cat.name.toUpperCase()}"></span>
                 <div>
                     <th:block th:each="post : ${cat.posts}">
                         <span class="badge pink lighten-4">

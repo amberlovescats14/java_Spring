@@ -50,9 +50,10 @@ values ('professional'),
        ('pets'),
        ('children'),
        ('funny');
-
+select * from users;
 select * from post_category;
 select * from posts;
+select * from categories;
 
 show tables;
 delete from users where id = 2;

@@ -28,6 +28,8 @@ public class PostController {
     private CategoriesRepo categoriesDao;
     private PostSvc postSvc;
     private EmailService emailService;
+    private String userAnon = "anonymousUser";
+
 
     public PostController(PostRepo postDao, UserRepo userDao, CategoriesRepo categoriesDao, PostSvc postSvc, EmailService emailService) {
         this.postDao = postDao;
@@ -40,9 +42,17 @@ public class PostController {
     //! SHOW ALL
     @GetMapping("/posts")
     public String all(Model model){
-        List<Post> posts = postDao.findAll();
-        model.addAttribute("posts", posts);
-        return "posts/posts";
+        long loggedInId = -1;
+        if(postSvc.checkIfThereIsALoggedInUser()){
+            User user = postSvc.getLoggedInUser();
+            loggedInId = user.getId();
+            model.addAttribute("loggedInId", loggedInId);
+            List<Post> posts = postDao.findAll();
+            model.addAttribute("posts", posts);
+            return "posts/posts";
+        }
+        return "redirect:/login";
+
     }
 //z : react
 //    @GetMapping("/posts")
@@ -59,24 +69,38 @@ public class PostController {
             @PathVariable long id,
             Model model
     ) throws PostException {
-        Post found = postDao.findById(id)
+        long loggedInId = -1;
+        if(postSvc.checkIfThereIsALoggedInUser()){
+            User user = postSvc.getLoggedInUser();
+            loggedInId = user.getId();
+            model.addAttribute("loggedInId", loggedInId);
+            Post found = postDao.findById(id)
                     .orElseThrow(()-> new PostException());
 
-        model.addAttribute("post", found);
-        return "posts/singlePost";
+            model.addAttribute("post", found);
+            return "posts/singlePost";
+        }
+        return "redirect:/login";
 
     }
 
     //!CREATE
     @GetMapping("/posts/create")
     public String showForm( Model model){
-        List<User> users = userDao.findAll();
-        List<Categories> categories = categoriesDao.findAll();
-        Post post = new Post();
-        model.addAttribute("users", users);
-        model.addAttribute("allCategories", categories);
-        model.addAttribute("post", post);
-        return "posts/create";
+        String loggedInUsername = "You are not logged in";
+        if(postSvc.checkIfThereIsALoggedInUser()){
+            User user = postSvc.getLoggedInUser();
+            loggedInUsername = user.getEmail();
+
+            model.addAttribute("loggedInUsername", loggedInUsername);
+
+            List<Categories> categories = categoriesDao.findAll();
+            model.addAttribute("allCategories", categories);
+            model.addAttribute("post", new Post());
+            return "posts/create";
+
+        }
+        return "redirect:/login";
     }
 
     @PostMapping("/posts/create")
@@ -114,18 +138,25 @@ public class PostController {
             @PathVariable long id,
             Model model
     ) throws PostException {
-        Post post = postDao.findById(id)
-                .orElseThrow(()-> new PostException());
+        if(postSvc.checkIfThereIsALoggedInUser()){
+            User loggedInUser = postSvc.getLoggedInUser();
+            if(loggedInUser.getId() == id){
+                Post post = postDao.findById(id)
+                        .orElseThrow(()-> new PostException());
 
-        //creating an arrayList of id's for check purpose
-        List<Long> catIDs = new ArrayList<>();
-        for (Categories category : post.getCategories()) {
-            catIDs.add(category.getId());
+                //creating an arrayList of id's for check purpose
+                List<Long> catIDs = new ArrayList<>();
+                for (Categories category : post.getCategories()) {
+                    catIDs.add(category.getId());
+                }
+                model.addAttribute("catIds", catIDs);
+                model.addAttribute("post", post);
+                model.addAttribute("allCategories", categoriesDao.findAll());
+                return "posts/edit";
+            }
         }
-        model.addAttribute("catIds", catIDs);
-        model.addAttribute("post", post);
-        model.addAttribute("allCategories", categoriesDao.findAll());
-        return "posts/edit";
+        return "redirect:/posts";
+
     }
 
     @PostMapping("/posts/edit/{id}")
@@ -155,10 +186,17 @@ public class PostController {
             @PathVariable long id,
             Model model
     ) throws PostException {
-        postDao.findById(id)
+        Post post = postDao.findById(id)
                 .orElseThrow(()-> new PostException());
-        model.addAttribute("id", id);
-        return "posts/delete";
+        if(postSvc.checkIfThereIsALoggedInUser()){
+            User user = postSvc.getLoggedInUser();
+            if(user.getId() == post.getUser().getId()){
+                model.addAttribute("id", id);
+                return "posts/delete";
+            }
+        }
+        return "redirect:/login";
+
     }
 
     @PostMapping("/posts/delete/{id}")
@@ -167,9 +205,15 @@ public class PostController {
     ) throws PostException {
         Post found =  postDao.findById(id)
                 .orElseThrow(()-> new PostException());
-        emailService.prepareAndSend(found, "Post deleted", "Post '"+found.getTitle()+"' has been delted.");
-        postDao.deleteById(id);
-        return "redirect:/posts";
+        if(postSvc.checkIfThereIsALoggedInUser()){
+            User user = postSvc.getLoggedInUser();
+            if(user.getId() == found.getUser().getId()){
+                emailService.prepareAndSend(found, "Post deleted", "Post '"+found.getTitle()+"' has been delted.");
+                postDao.deleteById(id);
+                return "redirect:/posts";
+            }
+        }
+        return "redirect:/login";
     }
 
 
