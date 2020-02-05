@@ -5,7 +5,7 @@
     <title>Create</title>
 
 </head>
-<body style="padding: 30px !important;">
+<body style="padding: 0 30px !important;">
 <!-- Compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -16,7 +16,7 @@
 <h1>Create Post</h1>
 <h1 th:if="${alert}" class="text-red">All Fields Required</h1>
 <div class="row">
-    <form class="col s12" action="/posts/create" method="post" th:object="${post}">
+    <form class="col s12" th:action="@{/posts/create}" method="post" th:object="${post}">
         <div class="row">
             <div class="input-field col s6">
                 <input placeholder="Title" id="title" type="text" class="validate" th:field="*{title}" >

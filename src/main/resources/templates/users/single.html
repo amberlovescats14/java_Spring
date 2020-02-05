@@ -6,46 +6,49 @@
 </head>
 <body>
 <nav th:include="partials/navbar :: navbar"></nav>
-<h1 th:text="${user.username}" class="pink lighten-2">One User</h1>
+<h1 th:text="${user.username.toLowerCase()}" class="pink lighten-2">One User</h1>
 
 <div class="row">
-    <div class="card col s6 offset-s3 pink">
+    <div class="card col s5 offset-s4 pink darken-2 z-depth-3">
         <div class="card-body">
             <div class="card-title">
-                <h2 class="white-text"><span th:text="${user.email}">holder</span></h2>
+                <h3 class="white-text"><span th:text="${user.email}">holder</span></h3>
             </div>
 <!--            action-->
             <div class="card-action">
-                <a class="waves-effect waves-light btn pink lighten-4"
-                   th:href="@{'/user/edit/'+ ${user.id}}">
-                    Edit Profile</a>
-                <!-- Modal Trigger -->
-                <a class="waves-effect waves-light btn modal-trigger pink lighten-4" href="#modal1">Delete Profile</a>
+                <th:block th:if="${options}">
+                    <a class="waves-effect waves-light btn orange"
+                       th:href="@{'/user/edit/'+ ${user.id}}">
+                        Edit Profile</a>
+                    <!-- Modal Trigger -->
+                    <a class="waves-effect waves-light btn modal-trigger orange" href="#modal1">Delete Profile</a>
     
-                <!-- Modal Structure -->
-                <div id="modal1" class="modal">
-                    <div class="modal-content">
-                        <h4>Confirm</h4>
-                        <p>Are you sure you want to delete your profile?</p>
+                    <!-- Modal Structure -->
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                            <h4>Confirm</h4>
+                            <p>Are you sure you want to delete your profile?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <form th:action="@{'/user/delete/'+ ${user.id}}"
+                                  method="post">
+                                <a href="#!"
+                                   class="modal-close waves-effect waves-light btn modal-trigger pink"> No</a>
+                                <button type="submit"
+                                        class="waves-effect waves-light btn modal-trigger pink"
+                                >Yes</button>
+                            </form>
+        
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <form th:action="@{'/user/delete/'+ ${user.id}}"
-                            method="post">
-                            <a href="#!"
-                               class="modal-close waves-effect waves-light btn modal-trigger pink"> No</a>
-                            <button type="submit"
-                            class="waves-effect waves-light btn modal-trigger pink"
-                            >Yes</button>
-                        </form>
-                
-                    </div>
-                </div>
+
+                </th:block>
                 
             </div>
 <!--            end action-->
             <th:block th:each="post : ${user.posts}">
                 <div class="card pink lighten-2">
-                    <div class="card-content">
+                    <div class="card-content white-text">
                         <div class="card-title" th:text="${post.title}"></div>
                         <a th:href="@{'/posts/'+ ${post.id}}">View Post</a>
                     </div>

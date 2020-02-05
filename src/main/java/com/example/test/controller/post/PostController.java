@@ -9,6 +9,7 @@ import com.example.test.repos.PostRepo;
 import com.example.test.repos.UserRepo;
 import com.example.test.services.EmailService;
 import com.example.test.services.PostSvc;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

@@ -12,16 +12,27 @@
 
 <h1>Login</h1>
 
+<div th:if="${param.error}">
+    <h2 class="red"> Invalid Username or Password</h2>
+</div>
+<div th:if="${param.logout}">
+    <h2 class="blue"></h2>
+</div>
+
 <div class="row">
-    <form class="col s12" action="/login" method="post">
+    <form class="col s6 z-depth-4 offset-s3" th:action="@{/login}" method="post">
         <div class="row">
-            <div class="input-field col s6">
+            <div class="input-field col s12">
                 <input placeholder="Username" id="username" type="text" class="validate field" name="username">
                 <label for="username">Username: </label>
-                <input placeholder="****" id="password" type="text" class="validate field" name="password">
-                <label for="password">Password: </label>
-                
-                <button class="btn waves-effect waves-light" type="submit" name="action">
+                <div class="row">
+                    <div class="input-field col s12 ">
+                        <input placeholder="****" id="password" type="text" class="validate field" name="password">
+                        <label for="password">Password: </label>
+                    </div>
+                </div>
+
+                <button class="btn waves-effect waves-light pink darken-2" type="submit" name="action">
                     Submit
                 </button>
             </div>

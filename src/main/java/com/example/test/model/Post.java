@@ -3,9 +3,13 @@ package com.example.test.model;
 
 import com.example.test.model.categories.Categories;
 import com.example.test.model.user.User;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,11 +19,19 @@ public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(columnDefinition = "varchar(100) not null")
+    @NotBlank(message = "Title is required")
+    @Size(min = 3, message = "Title must be at least 3 characters")
+    @Column(nullable = false)
     private String title;
 
-    @Column(columnDefinition = "varchar(200) not null")
+    @NotBlank(message = "Description is required")
+    @Column(nullable = false, length = 300)
     private String description;
+
+//    @CreationTimestamp
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @Column(name = "create_date")
+//    private Date createDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

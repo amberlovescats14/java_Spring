@@ -5,6 +5,8 @@ package com.example.test.model.user;
 import com.example.test.model.Post;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -14,13 +16,17 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(columnDefinition = "varchar(100) not null")
+    @Column(nullable = false, length = 100, unique = true)
+    @NotBlank(message = "Username cannot be blank")
     private String username;
 
-    @Column(columnDefinition = "varchar(100) not null")
+    @Column(nullable = false, length = 100, unique = true)
+    @Email(message = "Invalid Email")
+    @NotBlank(message = "Email cannot be blank")
     private String email;
 
-    @Column(columnDefinition = "varchar(200) not null")
+    @Column(nullable = false)
+    @NotBlank(message = "Password cannot be empty")
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -28,6 +34,15 @@ public class User {
 
 
     public User() {
+    }
+
+    //!copy
+    public User(User copy) {
+        id = copy.id;
+        email = copy.username;
+        username = copy.email;
+        password = copy.password;
+        posts = copy.posts;
     }
     public User(String username, String email, String password) {
         this.username = username;

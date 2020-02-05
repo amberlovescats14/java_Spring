@@ -38,4 +38,12 @@ public class PostSvc {
             category.addPost(post);
         }
     }
+
+    //! Check if current user matches post user
+    public boolean checkIfCurrentUserMatchesParam(
+            User currentUser, User paramUser
+    ){
+        if(currentUser.getId() == paramUser.getId()) return true;
+        else return false;
+    }
 }

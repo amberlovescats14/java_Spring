@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SillySvc {
 
-    public void sayHi(){
+    public String sayHi(){
         System.out.println("SILLY HI");
+        return "Hi";
     }
 
 }
