@@ -9,7 +9,8 @@
 <h1>Register</h1>
 
 <div class="row">
-    <form class="col s4 offset-s4 z-depth-3" th:action="@{/user/create}" method="post" th:object="${user}">
+    <form class="col s4 offset-s4 z-depth-3" style="padding: 20px !important;" th:action="@{/user/create}" method="post"
+          th:object="${user}">
         <div class="row">
             <div class="input-field col s12">
                 <input placeholder="Cats12" id="username" type="text" class="validate" th:field="*{username}" >

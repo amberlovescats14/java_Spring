@@ -53,10 +53,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                protected routes
                     .authorizeRequests()
                 .antMatchers(
+                        "/categories",
                         "/posts/create",
                         "/posts/edit/{id}",
-                        "/posts",
-                        "/categories"
+                        "/posts"
                 )
                 .authenticated()
                 ;
